@@ -49,9 +49,11 @@ public:
 
     int size();
 
-    Entry<K>* getHead();
+    Entry<K>* getListHead();
 
-    Entry<K>* getTail();
+    Entry<K>* getListTail();
+
+    map<K, V>* getUrlMap();
 
 private:
 
