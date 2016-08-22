@@ -177,14 +177,20 @@ int TimeUrlMap<K, V>::size(){
 }
 
 template<class K, class V>
-Entry<K>* TimeUrlMap<K, V>::getHead(){
-    return m_head_ptr;
+Entry<K>* TimeUrlMap<K, V>::getListHead(){
+	return m_head_ptr;
 }
 
 template<class K, class V>
-Entry<K>* TimeUrlMap<K, V>::getTail(){
-    return m_tail_ptr;
+Entry<K>* TimeUrlMap<K, V>::getListTail(){
+	return m_tail_ptr;
 }
+
+template<class K, class V>
+map<K, V>* TimeUrlMap<K, V>::getUrlMap(){
+	return m_inner_map_ptr;
+}
+
 
 
 void func143(int max_size, long long interval){
@@ -231,8 +237,8 @@ void func143(int max_size, long long interval){
         usleep(1000 * 1000);
         mapPtr->put("f", "F");
 
-        Entry<string>* head_ptr = mapPtr->getHead();
-        Entry<string>* tail_ptr = mapPtr->getTail();
+        Entry<string>* head_ptr = mapPtr->getListHead();
+        Entry<string>* tail_ptr = mapPtr->getListTail();
         Entry<string>* tmp_ptr = head_ptr->next;
 
         while(tmp_ptr != tail_ptr){
