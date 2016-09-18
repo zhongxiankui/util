@@ -60,7 +60,7 @@ TimeUrlMap<K, V>::~TimeUrlMap(){
 }
 
 template<class K, class V>
-bool TimeUrlMap<K, V>::insertHead(Entry<K>* insert_node_ptr, Entry<K>* pre_node_ptr){
+bool TimeUrlMap<K, V>::insertAfterNode(Entry<K>* insert_node_ptr, Entry<K>* pre_node_ptr){
 
     if(NULL == insert_node_ptr || NULL == pre_node_ptr){
         return false;
@@ -105,7 +105,7 @@ bool TimeUrlMap<K, V>::updateElement(K key, long long ts){
             Entry<K>* tmp_node_ptr = node_ptr;
             node_ptr->pre->next = node_ptr->next;
             node_ptr->next->pre = node_ptr->pre;
-            insertHead(tmp_node_ptr, m_head_ptr);
+            insertAfterNode(tmp_node_ptr, m_head_ptr);
             printf("updateElement start1-1 key:[%s], now:[%lld]\n", key.c_str(), ts);
 
             return true;
@@ -149,7 +149,7 @@ bool TimeUrlMap<K, V>::put(K key, V value){
 
         new_node_ptr->m_key = key;
         new_node_ptr->m_ts = now;
-        insertHead(new_node_ptr, m_head_ptr);
+        insertAfterNode(new_node_ptr, m_head_ptr);
         printf("put start2-2 key:[%s],value:[%s], now:[%lld]\n", key.c_str(), value.c_str(), now);
 //        printf("put start2-2\n");
         m_size++;
