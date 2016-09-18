@@ -70,7 +70,7 @@ private:
 
     map<K, V>* m_inner_map_ptr;
 
-    bool insertHead(Entry<K>* insert_node_ptr, Entry<K>* pre_node_ptr);
+    bool insertAfterNode(Entry<K>* insert_node_ptr, Entry<K>* pre_node_ptr);
 
     bool expireElement(long long last_ts);
 
