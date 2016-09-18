@@ -42,12 +42,13 @@ TimeUrlMap<K, V>::TimeUrlMap(long long interval){
 
 template<class K, class V>
 TimeUrlMap<K, V>::~TimeUrlMap(){
-    if(NULL != m_head_ptr){
-        delete m_head_ptr;
-    }
 
-    if(NULL != m_tail_ptr){
-        delete m_tail_ptr;
+    Entry<K>* node = m_head_ptr;
+    Entry<K>* tmp_ptr = NULL;
+    while(NULL != node){
+        tmp_ptr = node->next;
+        delete node;
+        node = tmp_ptr;
     }
 
     if(NULL != m_inner_map_ptr){
