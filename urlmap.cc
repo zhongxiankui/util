@@ -249,6 +249,7 @@ void func143(int max_size, long long interval){
         printf("end ===================================>\n");
         usleep(1000 * 2000);
     }
+}
     
     int main(int argc, char** argv){
      printf("max_size:[%d], interval:[%lld]\n", atoi(argv[0]), atol(argv[1]));
