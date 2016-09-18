@@ -1,7 +1,10 @@
 #include "urlmap.h"
 #include <climits>
 #include <unistd.h>
-using namespace mns;
+#include <stdlib.h>
+#include <string>
+#include <stdio.h>
+
 
 
 template <class K>
