@@ -7,6 +7,9 @@ using namespace mns;
 template <class K>
 Entry<K>::Entry(K  key){
     m_key = key;
+    m_ts = 0;
+    pre = NULL;
+    next = NULL;
 }
 
 template <class K>
