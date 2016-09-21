@@ -5,8 +5,8 @@
  *      Author: zhongxiankui
  */
 
-#ifndef MILINK_COMMON_COMM_INCLUDE_CACHE_URLMAP_H_
-#define MILINK_COMMON_COMM_INCLUDE_CACHE_URLMAP_H_
+#ifndef _CACHE_URLMAP_H_
+#define _CACHE_URLMAP_H_
 
 #include <sys/time.h>
 #include <map>
@@ -113,4 +113,4 @@ public:
 }
 
 
-#endif /* MILINK_COMMON_COMM_INCLUDE_CACHE_URLMAP_H_ */
+#endif /* _CACHE_URLMAP_H_ */
