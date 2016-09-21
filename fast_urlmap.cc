@@ -12,7 +12,7 @@
 
 #include "cache_urlmap.h"
 
-using namespace mns;
+using namespace cache;
 
 template<class K>
 NodeEntry<K>::NodeEntry(K key) {
@@ -37,6 +37,29 @@ ValueEntry<K, V>::ValueEntry(V value, unsigned long long ts, NodeEntry<K>* node_
 template<class K, class V>
 ValueEntry<K, V>::~ValueEntry() {
 
+}
+
+template<class K, class V>
+long long TimeUrlMap<K, V>::getTimeMills()
+{
+    struct timeval tv;
+
+    gettimeofday(&tv,NULL);
+    return (long long)tv.tv_sec * 1000 + (tv.tv_usec / 1000);
+}
+
+template<class K, class V>
+TimeUrlMap<K, V>::TimeUrlMap() {
+    m_max_size = 10000;
+    m_interval = 60 * 60 * 1000;
+    m_clear_size = 100;
+
+    m_head_ptr = new NodeEntry<K>("head");
+    m_tail_ptr = new NodeEntry<K>("tail");
+    m_inner_map_ptr = new map<K, ValueEntry<K, V> >();
+    m_head_ptr->next = m_tail_ptr;
+    m_tail_ptr->pre = m_head_ptr;
+    m_size = 0;
 }
 
 template<class K, class V>
@@ -138,7 +161,7 @@ bool TimeUrlMap<K, V>::put(const K& key, const V& value) {
         return false;
     }
 
-    long long now = gettimeMs();
+    long long now = getTimeMills();
     if (m_inner_map_ptr->find(key) != m_inner_map_ptr->end()) {
         NodeEntry<K>* node_ptr = updateNode(key, now);
         if (NULL == node_ptr) {
@@ -173,7 +196,7 @@ template<class K, class V>
 bool TimeUrlMap<K, V>::get(const K& key, V& value) {
 
     //obsolete expire element
-    long long now = gettimeMs();
+    long long now = getTimeMills();
     long long last_ts = now - m_interval;
     expireElement(last_ts);
 
@@ -209,17 +232,61 @@ map<K, ValueEntry<K, V> >* TimeUrlMap<K, V>::getUrlMap() {
 }
 
 template<class K, class V>
-int TimeUrlMap<K, V>::getClearSize() {
+int TimeUrlMap<K, V>::getMaxSize(){
+    return m_max_size;
+}
+
+template<class K, class V>
+long long TimeUrlMap<K, V>::getInterval(){
+    return m_interval;
+}
+
+template<class K, class V>
+int TimeUrlMap<K, V>::getClearSize(){
     return m_clear_size;
+}
+
+template<class K, class V>
+bool TimeUrlMap<K, V>::setMaxSize(int max_size){
+    if(max_size < 0){
+        return false;
+    }
+
+    m_max_size = max_size;
+
+    return true;
+}
+
+template<class K, class V>
+bool TimeUrlMap<K, V>::setInterval(long long interval){
+    if(interval < 0){
+        return false;
+    }
+
+    m_interval = interval;
+
+    return true;
+}
+
+template<class K, class V>
+bool TimeUrlMap<K, V>::setClearSize(int clear_size){
+
+    if(clear_size < 0){
+        return false;
+    }
+
+    m_clear_size = clear_size;
+
+    return true;
 }
 
 
 /*
 void func143(int max_size, long long interval, int count) {
-    long long start = gettimeMs();
-    printf("start:[%lld]\n", start);
 
     TimeUrlMap<string, string>* mapPtr = new TimeUrlMap<string, string>(max_size, interval);
+    long long start = mapPtr->getTimeMills();
+    printf("start:[%lld]\n", start);
     printf("mapPtr:[%p]\n", mapPtr);
 
     int num = 0;
@@ -319,10 +386,10 @@ string int_to_string(int x) {
 }
 
 void func142(int max_size, long long interval, int count, int inner_count) {
-    long long start = gettimeMs();
-    printf("start:[%lld]\n", start);
 
     TimeUrlMap<string, Test>* mapPtr = new TimeUrlMap<string, Test>(max_size, interval, 1);
+    long long start = mapPtr->getTimeMills();
+    printf("start:[%lld]\n", start);
     printf("mapPtr:[%p]\n", mapPtr);
 
     int num = 0;
